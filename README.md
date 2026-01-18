@@ -1,5 +1,12 @@
-## Next.js App Router Course - Starter
+# Next.js - NextVPS
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+- Version 16
+- A next tutorial
+- Site <https://nextjs.org/learn/dashboard-app/getting-started>
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+## Create
+
+- Install `npm i -g pnpm`
+- Scaffolding `npx create-next-app@latest nextjsvps --example "https://github.com/vercel/next-learn/tree/main/dashboard/starter-example" --use-pnpm`
+- Install if not already `pnpm i`
+- Run dev `pnpm dev`
