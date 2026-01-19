@@ -21,4 +21,9 @@
 ## Layouts and file based routing
 
 - Each route can have separate layout.tsx and page.tsx (page is like index of that folder so it must exist)
--
+
+## Database
+
+- Setup Vercel db
+- Seed data
+- Fetch data
