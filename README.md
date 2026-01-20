@@ -4,6 +4,10 @@
 - A next tutorial
 - Site <https://nextjs.org/learn/dashboard-app/getting-started>
 
+## Demo
+
+- Live <https://nextvps.vercel.app/dashboard>
+
 ## Create
 
 - Install `npm i -g pnpm`
