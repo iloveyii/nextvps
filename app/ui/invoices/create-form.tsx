@@ -48,7 +48,9 @@ export default function Form({
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <div id="customer-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.customerId && Err(state.errors.customerId)}
+            {state.errors?.customerId && (
+              <Err errors={state.errors.customerId} />
+            )}
           </div>
         </div>
 
@@ -71,7 +73,7 @@ export default function Form({
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
             <div id="amount-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.amount && Err(state.errors.amount)}
+              {state.errors?.amount && <Err errors={state.errors.amount} />}
             </div>
           </div>
         </div>
@@ -116,7 +118,7 @@ export default function Form({
               </div>
             </div>
             <div id="status-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.status && Err(state.errors.status)}
+              {state.errors?.status && <Err errors={state.errors.status} />}
             </div>
           </div>
         </fieldset>

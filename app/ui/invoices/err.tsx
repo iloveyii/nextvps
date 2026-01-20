@@ -1,6 +1,7 @@
-import { State } from "@/app/lib/actions";
+"use client";
 
-export default function Err(errors: string[]) {
+export default function Err(props: { readonly errors: string[] }) {
+  const errors = props.errors;
   return (
     <>
       {errors.map((error: string) => (
