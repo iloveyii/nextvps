@@ -14,6 +14,7 @@
 - Scaffolding `npx create-next-app@latest nextjsvps --example "https://github.com/vercel/next-learn/tree/main/dashboard/starter-example" --use-pnpm`
 - Install if not already `pnpm i`
 - Run dev `pnpm dev`
+- Run lint `pnpm lint`
 
 ## Styles
 
