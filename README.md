@@ -27,3 +27,13 @@
 - Setup Vercel db
 - Seed data
 - Fetch data
+
+## Streaming
+
+- Some API / Network requests might be slower affecting the overall loading time even when using promise.all
+- To improve user experience even with slow requests by transferring small amounts of data as it become available to the client
+- It works well with React component model, as a model is considered a chunk
+- There are two levels you can implement streaming at:
+  - At the page level with loading.tsx which creates suspense
+  - At the component level for finer control
+  -
