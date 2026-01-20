@@ -36,4 +36,5 @@
 - There are two levels you can implement streaming at:
   - At the page level with loading.tsx which creates suspense
   - At the component level for finer control
-  -
+- Use (overview) folder to group page and loading but exclude it from url path, so that loading apply only to this page and not invoices/ etc.
+-
