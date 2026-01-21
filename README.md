@@ -48,3 +48,8 @@
 - npx nypm add @kinde-oss/kinde-auth-nextjs
 - corepack prepare pnpm@latest --activate
 - pnpm install @kinde-oss/kinde-auth-nextjs
+
+## Deployment
+
+- Push to main branch
+- If not deployed check and run locally `pnpm build`

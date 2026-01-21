@@ -81,19 +81,18 @@ export async function updateInvoice(id: string, formData: FormData) {
       SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
       WHERE id = ${id}
     `;
+    
   } catch(error) {
     // We'll also log the error to the console for now
     console.error(error);
-    return { message: 'Database Error: Failed to Update Invoice.' };
+    // return { message: 'Database Error: Failed to Update Invoice.' };
   }
-  
- 
+
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
 
 export async function deleteInvoice(id: string) {
-  throw new Error('Failed to Delete Invoice');
   await sql`DELETE FROM invoices WHERE id = ${id}`;
   revalidatePath('/dashboard/invoices');
 }
