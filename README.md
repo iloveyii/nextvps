@@ -53,3 +53,4 @@
 
 - Push to main branch
 - If not deployed check and run locally `pnpm build`
+- New
