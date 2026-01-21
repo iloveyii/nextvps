@@ -10,8 +10,17 @@ import {
   CardsSkeleton,
 } from "@/app/ui/skeletons";
 import CardWrapper from "@/app/ui/dashboard/cards";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
+  const session = getKindeServerSession();
+  if (await session.isAuthenticated()) {
+    console.log("Authed");
+  } else {
+    console.log("Not Authed");
+    redirect("/api/auth/login");
+  }
   return (
     <main>
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
