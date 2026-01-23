@@ -1,4 +1,4 @@
-# Next.js - NextVPS
+# Next.js - NextShop
 
 - Version 16
 - A next tutorial
@@ -41,15 +41,16 @@
 - There are two levels you can implement streaming at:
   - At the page level with loading.tsx which creates suspense
   - At the component level for finer control
-- Use (overview) folder to group page and loading but exclude it from url path, so that loading apply only to this page and not invoices/ etc.
+- Use (overview) folder to group page and loading but exclude it from URL path, so that loading apply only to this page and not invoices/ etc.
 
 ## Kinde Auth
 
-- npx nypm add @kinde-oss/kinde-auth-nextjs
-- corepack prepare pnpm@latest --activate
-- pnpm install @kinde-oss/kinde-auth-nextjs
+- Site URL: <https://alih.kinde.com>
+- Install `npx nypm add @kinde-oss/kinde-auth-nextjs`
+- Fix `corepack prepare pnpm@latest --activate`
+- Re-install `pnpm install @kinde-oss/kinde-auth-nextjs`
 
-## Deployment
+## Deployment Vercel
 
 - Push to main branch
 - If not deployed check and run locally `pnpm build`
