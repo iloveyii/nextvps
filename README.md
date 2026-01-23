@@ -55,3 +55,7 @@
 - Push to main branch
 - If not deployed check and run locally `pnpm build`
 - New Deploy
+
+## Next
+
+- Medusa <https://docs.medusajs.com>
