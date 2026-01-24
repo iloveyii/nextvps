@@ -3,105 +3,132 @@ import NavLinks from "@/app/ui/vps/nav-links";
 import AcmeLogo from "@/app/ui/acme-logo";
 import { PowerIcon } from "@heroicons/react/24/outline";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
+import Image from "next/image";
 
 export default function SideNav() {
   return (
     <>
       <div className="sidebar">
         <div className="sidebar-header">
-          <a className="nav-link" href="/">
-            <img src="/images/svg/logo.svg?" alt="Logo" className="logo" />
-          </a>
+          <Link className="nav-link" href="/">
+            <Image
+              src="/images/svg/logo.svg?"
+              alt="Logo"
+              width={120}
+              height={40}
+              className="logo"
+            />
+          </Link>
         </div>
         <ul className="nav flex-column">
           <li className="nav-item">
-            <a className="nav-link active" href="/">
-              <img src="/images/svg/home.svg" alt="Logo" className="logo" />
+            <Link className="nav-link active" href="/">
+              <Image
+                src="/images/svg/home.svg"
+                alt="Logo"
+                width={30}
+                height={30}
+                className="logo"
+              />
               <span>Dashboard</span>
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/server.html">
-              <img
+            <Link className="nav-link" href="/server.html">
+              <Image
                 src="/images/svg/services.svg"
                 alt="servers"
+                width={30}
+                height={30}
                 className="nav-img"
               />
               Servers
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              <img
+            <Link className="nav-link" href="#">
+              <Image
                 src="/images/svg/apis.svg"
                 alt="servers"
+                width={30}
+                height={30}
                 className="nav-img"
               />
               APIs
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              <img
+            <Link className="nav-link" href="#">
+              <Image
                 src="/images/svg/domains.svg"
                 alt="servers"
+                width={30}
+                height={30}
                 className="nav-img"
               />
               Domains
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              <img src="/images/svg/ssls.svg" alt="ssls" className="nav-img" />{" "}
+            <Link className="nav-link" href="#">
+              <Image
+                src="/images/svg/ssls.svg"
+                alt="ssls"
+                width={30}
+                height={30}
+                className="nav-img"
+              />{" "}
               SSLs
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              <img
+            <Link className="nav-link" href="#">
+              <Image
                 src="/images/svg/billing.svg"
                 alt="ssls"
+                width={30}
+                height={30}
                 className="nav-img"
               />
               Billing
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              <img
+            <Link className="nav-link" href="#">
+              <Image
                 src="/images/svg/support.svg"
                 alt="ssls"
+                width={30}
+                height={30}
                 className="nav-img"
               />
               Support
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              {" "}
+            <Link className="nav-link" href="#">
               <i className="bi bi-hdd"></i> Storage{" "}
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            <Link className="nav-link" href="#">
               <i className="bi bi-shield-check"></i> Security
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            <Link className="nav-link" href="#">
               <i className="bi bi-graph-up"></i> Monitoring
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              {" "}
+            <Link className="nav-link" href="#">
               <i className="bi bi-gear"></i> Settings{" "}
-            </a>
+            </Link>
           </li>
           <li className="nav-item mt-4">
-            <a className="nav-link" href="#">
+            <Link className="nav-link" href="#">
               <i className="bi bi-box-arrow-right"></i> Logout
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
@@ -112,102 +139,125 @@ export default function SideNav() {
           style={{ width: "300px", display: "block", position: "relative" }}
         >
           <div className="sidebar-header">
-            <a className="nav-link" href="/">
-              <img src="/images/svg/logo.svg?" alt="Logo" className="logo" />
-            </a>
+            <Link className="nav-link" href="/">
+              <Image
+                src="/images/svg/logo.svg?"
+                alt="Logo"
+                width={30}
+                height={30}
+                className="logo"
+              />
+            </Link>
           </div>
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link active" href="#">
-                <img src="/images/svg/home.svg" alt="Logo" className="logo" />
+              <Link className="nav-link active" href="#">
+                <Image
+                  src="/images/svg/home.svg"
+                  alt="Logo"
+                  width={30}
+                  height={30}
+                  className="logo"
+                />
                 <span>Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                <img
+              <Link className="nav-link" href="#">
+                <Image
                   src="/images/svg/services.svg"
                   alt="servers"
+                  width={30}
+                  height={30}
                   className="nav-img"
                 />
                 Servers
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                <img
+              <Link className="nav-link" href="#">
+                <Image
                   src="/images/svg/apis.svg"
                   alt="servers"
+                  width={30}
+                  height={30}
                   className="nav-img"
                 />
                 APIs
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                <img
+              <Link className="nav-link" href="#">
+                <Image
                   src="/images/svg/domains.svg"
                   alt="servers"
+                  width={30}
+                  height={30}
                   className="nav-img"
                 />
                 Domains
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                <img
+              <Link className="nav-link" href="#">
+                <Image
                   src="/images/svg/ssls.svg"
                   alt="ssls"
+                  width={30}
+                  height={30}
                   className="nav-img"
-                />{" "}
+                />
                 SSLs
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                <img
+              <Link className="nav-link" href="#">
+                <Image
                   src="/images/svg/billing.svg"
                   alt="ssls"
+                  width={30}
+                  height={30}
                   className="nav-img"
                 />
                 Billing
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                <img
+              <Link className="nav-link" href="#">
+                <Image
                   src="/images/svg/support.svg"
                   alt="ssls"
+                  width={30}
+                  height={30}
                   className="nav-img"
                 />
                 Support
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                {" "}
+              <Link className="nav-link" href="#">
                 <i className="bi bi-hdd"></i> Storage{" "}
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" href="#">
                 <i className="bi bi-shield-check"></i> Security
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" href="#">
                 <i className="bi bi-graph-up"></i> Monitoring
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" href="#">
                 <i className="bi bi-gear"></i> Settings
-              </a>
+              </Link>
             </li>
             <li className="nav-item mt-4">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" href="#">
                 <i className="bi bi-box-arrow-right"></i> Logout
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
