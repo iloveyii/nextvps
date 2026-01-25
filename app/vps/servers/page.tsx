@@ -1,0 +1,29 @@
+import Info from "@/app/ui/vps/info";
+import Stats from "@/app/ui/vps/stats";
+import Utilization from "@/app/ui/vps/utilization";
+import RecentAlerts from "@/app/ui/vps/recent-alerts";
+import QuickActions from "@/app/ui/vps/quick-actions";
+import Banner from "@/app/ui/vps/server/banner";
+import Table from "@/app/ui/vps/server/table";
+
+export default function Page() {
+  return (
+    <div className="content row py-4">
+      <div className="col-sm-3 g-0">
+        <Info />
+      </div>
+      <div className="col-sm-9">
+        <div className="right-container">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="register">
+                <Banner />
+                <Table />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

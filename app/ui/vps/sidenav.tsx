@@ -10,7 +10,7 @@ export default function SideNav() {
     <>
       <div className="sidebar">
         <div className="sidebar-header">
-          <Link className="nav-link" href="/">
+          <Link className="nav-link" href="/vps">
             <Image
               src="/images/svg/logo.svg?"
               alt="Logo"
@@ -22,7 +22,7 @@ export default function SideNav() {
         </div>
         <ul className="nav flex-column">
           <li className="nav-item">
-            <Link className="nav-link active" href="/">
+            <Link className="nav-link active" href="/vps">
               <Image
                 src="/images/svg/home.svg"
                 alt="Logo"
@@ -34,7 +34,7 @@ export default function SideNav() {
             </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" href="/server.html">
+            <Link className="nav-link" href="/vps/servers">
               <Image
                 src="/images/svg/services.svg"
                 alt="servers"
@@ -43,6 +43,11 @@ export default function SideNav() {
                 className="nav-img"
               />
               Servers
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" href="/vps/vpn">
+              <i className="bi bi-shield-check"></i> VPN
             </Link>
           </li>
           <li className="nav-item">
@@ -110,11 +115,7 @@ export default function SideNav() {
               <i className="bi bi-hdd"></i> Storage{" "}
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" href="#">
-              <i className="bi bi-shield-check"></i> Security
-            </Link>
-          </li>
+
           <li className="nav-item">
             <Link className="nav-link" href="#">
               <i className="bi bi-graph-up"></i> Monitoring
