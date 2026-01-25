@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
-import { invoices, customers, revenue, users } from '../lib/placeholder-data';
+import { invoices, customers, revenue, users, vpn_clients } from '../lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -99,6 +99,31 @@ async function seedRevenue() {
   );
 
   return insertedRevenue;
+}
+
+async function seedVpnClients() {
+  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS vpn_clients (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      serial_number INT NOT NULL,
+      private_key VARCHAR(64) NOT NULL,
+      ip_address VARCHAR(32) NOT NULL
+    );
+  `;
+
+  const insertedVpnClients = await Promise.all(
+    vpn_clients.map(
+      (client) => sql`
+        INSERT INTO vpn_clients (id, serial_number, private_key, ip_address)
+        VALUES (${client.id}, ${client.serial_number}, ${client.private_key}, ${client.ip_address})
+        ON CONFLICT (id) DO NOTHING;
+      `,
+    ),
+  );
+
+  return insertedVpnClients;
 }
 
 export async function GET() {
