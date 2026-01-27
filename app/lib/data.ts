@@ -1,6 +1,7 @@
 import postgres from 'postgres';
 import {
   CustomerField,
+  VpnField,
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
@@ -214,5 +215,25 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+
+export async function fetchVpnClients() {
+  try {
+    const clients = await sql<VpnField[]>`
+      SELECT
+        id,
+        serial_number,
+        private_key,
+        ip_address
+      FROM vpn_clients
+      ORDER BY serial_number ASC
+    `;
+
+    return clients;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all vpn clients.');
   }
 }

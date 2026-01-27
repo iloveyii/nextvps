@@ -77,6 +77,13 @@ export type FormattedCustomersTable = {
 
 export type CustomerField = {
   id: string;
+  serial_number: number;
+  private_key: string;
+  ip_address: string;
+};
+
+export type VpnField = {
+  id: string;
   name: string;
 };
 
