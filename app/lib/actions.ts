@@ -97,5 +97,14 @@ export async function deleteInvoice(id: string) {
   revalidatePath('/dashboard/invoices');
 }
 
+export async function createVpn(prevState: State, formData:FormData) {
+  const [id, serial_number, private_key, ip_address] = ['410544b2-4001-4271-9855-fec4b6a6441c', '3', 'private_key', 'ip_address'];
+  console.log([id, serial_number, private_key, ip_address] );
+  await sql`
+      INSERT INTO vpn_clients (id, serial_number, private_key, ip_address)
+      VALUES (${id}, ${serial_number}, ${private_key}, ${ip_address})
+    `;
+}
+
 
  

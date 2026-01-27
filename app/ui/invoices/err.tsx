@@ -5,7 +5,7 @@ export default function Err(props: { readonly errors: string[] }) {
   return (
     <>
       {errors.map((error: string) => (
-        <p className="mt-2 text-sm text-red-500" key={error}>
+        <p className="mt-2 text-sm text-danger" key={error}>
           {error}
         </p>
       ))}

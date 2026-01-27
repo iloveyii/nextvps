@@ -1,3 +1,5 @@
+import Form from "@/app/ui/vps/vpn/Form";
+
 export default function Banner() {
   return (
     <div className="banner">
@@ -11,11 +13,7 @@ export default function Banner() {
           </p>
         </div>
         <div className="col-sm-6 input-container">
-          <div className="input-group mb-3" style={{ width: "auto" }}>
-            <button className="btn btn-primary px-1 px-md-5" type="button">
-              Add Wireguard Client
-            </button>
-          </div>
+          <Form />
         </div>
       </div>
     </div>
