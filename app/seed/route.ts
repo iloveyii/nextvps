@@ -133,7 +133,9 @@ export async function GET() {
       seedCustomers(),
       seedInvoices(),
       seedRevenue(),
+      seedVpnClients()
     ]);
+    console.log(result);
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {

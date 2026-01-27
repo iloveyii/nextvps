@@ -62,28 +62,4 @@
 
 ## VPN
 
-```wg
-[Interface]
-PrivateKey = sGiraxZl820TWwlRbJGaeLDNZLPKHcK09eX121VkhWQ=
-Address = 10.0.0.52/32
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey = hY3xQjszuZtAWkDXXAA2qPIEfHukkWeYKFRMaINPUlU=
-Endpoint = 208.87.134.106:51820
-AllowedIPs = 0.0.0.0/0
-PersistentKeepalive = 25
-```
-
-```wg
-[Interface]
-PrivateKey = CA0WbOdOdl9UsUSfVKwTqr6WSXTkA1BVTAIgP9GcR3o=
-Address = 10.0.0.51/32
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey = hY3xQjszuZtAWkDXXAA2qPIEfHukkWeYKFRMaINPUlU=
-Endpoint = 208.87.134.106:51820
-AllowedIPs = 0.0.0.0/0
-PersistentKeepalive = 25
-```
+- Browse <http://localhost:8080>
