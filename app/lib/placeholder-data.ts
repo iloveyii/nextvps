@@ -146,16 +146,14 @@ const revenue = [
 
 const vpn_clients = [
   {
-    id: '410544b2-4001-4271-9855-fec4b6a6442a',
-    serial_number: '1',
+    name: 'Qasi Client',
     private_key: 'sGiraxZl820TWwlRbJGaeLDNZLPKHcK09eX121VkhWQ=',
-    ip_address: '10.0.0.52/32'
+    ip_address: '10.0.0.52'
   },
   {
-    id: '410544b2-4001-4271-9855-fec4b6a6441a',
-    serial_number: '2',
+    name: 'Qasi Server',
     private_key: 'CA0WbOdOdl9UsUSfVKwTqr6WSXTkA1BVTAIgP9GcR3o=',
-    ip_address: '10.0.0.51/32'
+    ip_address: '10.0.0.51'
   },
 ];
 

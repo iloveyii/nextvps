@@ -33,6 +33,7 @@ export default function Form() {
     <div className="mb-3" style={{ width: "auto" }}>
       <form className="input-group" action={formAction}>
         <input
+          name="name"
           type="text"
           className="form-control"
           placeholder="Enter client name..."

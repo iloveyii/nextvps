@@ -31,10 +31,10 @@ export default async function Table() {
           </tr>
         </thead>
         <tbody>
-          {vpn_clients.map((client) => (
+          {vpn_clients.map((client, i) => (
             <tr key={client.id}>
-              <td>{client.serial_number}</td>
-              <td>Name</td>
+              <td>{++i}</td>
+              <td>{client.name}</td>
               <td>{client.ip_address}</td>
               <td>Date</td>
               <td>Edit</td>

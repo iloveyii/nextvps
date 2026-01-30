@@ -224,16 +224,59 @@ export async function fetchVpnClients() {
     const clients = await sql<VpnField[]>`
       SELECT
         id,
-        serial_number,
+        name,
         private_key,
         ip_address
       FROM vpn_clients
-      ORDER BY serial_number ASC
+      ORDER BY name ASC
     `;
 
     return clients;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all vpn clients.');
+  }
+}
+
+
+export async function find_highest_ip_after(ip:string) {
+  let highest_ip;
+    try {
+      if(ip) {
+        highest_ip = await sql<any>`
+        SELECT
+          ip_address
+          FROM vpn_clients
+          WHERE ip_address > ${ip}::inet 
+          ORDER BY ip_address DESC 
+          LIMIT 1
+      `;
+      } else {
+        highest_ip = await sql<any>`
+        SELECT
+          ip_address
+          FROM vpn_clients
+          ORDER BY ip_address DESC 
+          LIMIT 1
+      `;
+      }
+
+    return highest_ip[0]?.ip_address || null;;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch highest ip.');
+  }
+}
+
+export async function make_next_ip_after(ip:string) {
+  try {
+    const next_ip = await sql<any>`
+      SELECT host((${ip}::text)::inet + 1) as next_ip
+    `;
+    console.log('obj next_ip:::', next_ip);
+    return next_ip[0]?.next_ip || null;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch next ip.');
   }
 }

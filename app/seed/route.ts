@@ -103,21 +103,23 @@ async function seedRevenue() {
 
 async function seedVpnClients() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
+  await sql`
+    DROP TABLE IF EXISTS vpn_clients;
+  `;
   await sql`
     CREATE TABLE IF NOT EXISTS vpn_clients (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      serial_number INT NOT NULL,
+      name VARCHAR(64) NOT NULL,
       private_key VARCHAR(64) NOT NULL,
-      ip_address VARCHAR(32) NOT NULL
+      ip_address inet NOT NULL
     );
   `;
 
   const insertedVpnClients = await Promise.all(
     vpn_clients.map(
       (client) => sql`
-        INSERT INTO vpn_clients (id, serial_number, private_key, ip_address)
-        VALUES (${client.id}, ${client.serial_number}, ${client.private_key}, ${client.ip_address})
+        INSERT INTO vpn_clients (name, private_key, ip_address)
+        VALUES (${client.name}, ${client.private_key}, ${client.ip_address})
         ON CONFLICT (id) DO NOTHING;
       `,
     ),

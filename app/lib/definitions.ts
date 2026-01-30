@@ -85,6 +85,8 @@ export type CustomerField = {
 export type VpnField = {
   id: string;
   name: string;
+  private_key: string;
+  ip_address: any;
 };
 
 export type InvoiceForm = {

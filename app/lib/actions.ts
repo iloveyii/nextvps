@@ -3,6 +3,7 @@ import { z } from "zod";
 import postgres from 'postgres';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import {find_highest_ip_after, make_next_ip_after} from '@/app/lib/data'
 
 
 const FormSchema = z.object({
@@ -98,13 +99,30 @@ export async function deleteInvoice(id: string) {
 }
 
 export async function createVpn(prevState: State, formData:FormData) {
-  const [id, serial_number, private_key, ip_address] = ['410544b2-4001-4271-9855-fec4b6a6441c', '3', 'private_key', 'ip_address'];
-  console.log([id, serial_number, private_key, ip_address] );
-  await sql`
-      INSERT INTO vpn_clients (id, serial_number, private_key, ip_address)
-      VALUES (${id}, ${serial_number}, ${private_key}, ${ip_address})
+  console.log('formData::', formData);
+  const h_ip = await find_highest_ip_after('');
+  console.log('h_ip', h_ip);
+  const n_ip = await make_next_ip_after(h_ip);
+  console.log('n_ip', n_ip);
+  const [name, private_key, ip_address] = [ formData.get('name'), 'private_key', n_ip];
+
+  try {
+    await sql`
+      INSERT INTO vpn_clients (name, private_key, ip_address)
+      VALUES (${name}, ${private_key}, ${ip_address})
+      ON CONFLICT (id) DO NOTHING;
     `;
+  } catch(error) {
+      console.log(error);
+  }
+  revalidatePath('/vps/vpn');
 }
+
+export async function generate_private_key() {
+  // Find next available IP in DB
+  // Execute command bash
+}
+
 
 
  
