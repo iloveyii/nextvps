@@ -63,3 +63,13 @@
 ## VPN
 
 - Browse <http://localhost:8080>
+
+## RabbitMQ
+
+```bash
+
+  curl -X POST http://localhost:3000/api/order \
+    -H "Content-Type: application/json" \
+    -d '{"id": 1, "item": "Shoes"}'
+
+```

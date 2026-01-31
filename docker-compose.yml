@@ -10,6 +10,35 @@ services:
       ADMINER_DEFAULT_DB: "${POSTGRES_DATABASE}"
       ADMINER_DEFAULT_USERNAME: "${POSTGRES_USER}"
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # AMQP
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  nextjs:
+    build: ./nextjs-app
+    container_name: nextjs-app
+    ports:
+      - "3000:3000"
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+
+  worker:
+    build: ./worker
+    container_name: order-worker
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - nextjs
+
 volumes:
   adminer_data:
   postgres_data:
