@@ -44,7 +44,9 @@ export default function Form() {
           <span className={className} aria-hidden="true" /> Add WG
         </button>
       </form>
-      {state?.errors?.vpn && <Err errors={state.errors.vpn} />}
+      <div id="name-error" aria-live="polite" aria-atomic="true">
+        {state?.errors?.name && <Err errors={state.errors.name} />}
+      </div>
     </div>
   );
 }

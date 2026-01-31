@@ -228,7 +228,7 @@ export async function fetchVpnClients() {
         private_key,
         ip_address
       FROM vpn_clients
-      ORDER BY name ASC
+      ORDER BY ip_address ASC
     `;
 
     return clients;

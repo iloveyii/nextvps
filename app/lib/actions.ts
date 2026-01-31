@@ -105,6 +105,13 @@ export async function createVpn(prevState: State, formData:FormData) {
   const n_ip = await make_next_ip_after(h_ip);
   console.log('n_ip', n_ip);
   const [name, private_key, ip_address] = [ formData.get('name'), 'private_key', n_ip];
+  console.log('Name is empty');
+  if(!name) {
+    return {
+      errors: {name: ['Name cannot be empty']},
+      message: 'Some fields are missing values',
+    };
+  }
 
   try {
     await sql`
