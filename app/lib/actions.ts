@@ -1,9 +1,10 @@
 'use server';
+import producer from "@/app/lib/pubsub";
 import { z } from "zod";
 import postgres from 'postgres';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import {find_highest_ip_after, make_next_ip_after} from '@/app/lib/data'
+import {find_highest_ip_after, findVpnIp, make_next_ip_after} from '@/app/lib/data'
 
 
 const FormSchema = z.object({
@@ -114,11 +115,13 @@ export async function createVpn(prevState: State, formData:FormData) {
   }
 
   try {
+    const found_ip = await findVpnIp(ip_address);
     await sql`
       INSERT INTO vpn_clients (name, private_key, ip_address)
       VALUES (${name}, ${private_key}, ${ip_address})
       ON CONFLICT (id) DO NOTHING;
     `;
+    if(!found_ip) await producer(ip_address);
   } catch(error) {
       console.log(error);
   }

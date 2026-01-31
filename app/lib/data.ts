@@ -238,6 +238,23 @@ export async function fetchVpnClients() {
   }
 }
 
+export async function findVpnIp(ip:string) {
+  try {
+        const found_ip = await sql<any>`
+        SELECT
+          ip_address
+          FROM vpn_clients
+          WHERE ip_address = ${ip}::inet 
+          LIMIT 1
+      `;
+      console.log('Inside findVpnIp::', found_ip);
+      return found_ip[0]?.ip_address || null;;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to find vpn ip.');
+  }
+}
+
 
 export async function find_highest_ip_after(ip:string) {
   let highest_ip;
