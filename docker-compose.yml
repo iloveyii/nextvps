@@ -35,6 +35,7 @@ services:
     container_name: order-worker
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      POSTGRES_URL: "${POSTGRES_URL}"
     depends_on:
       - rabbitmq
       - nextjs

@@ -148,11 +148,13 @@ const vpn_clients = [
   {
     name: 'Qasi Client',
     private_key: 'sGiraxZl820TWwlRbJGaeLDNZLPKHcK09eX121VkhWQ=',
+    public_key: 'p1',
     ip_address: '10.0.0.52'
   },
   {
     name: 'Qasi Server',
     private_key: 'CA0WbOdOdl9UsUSfVKwTqr6WSXTkA1BVTAIgP9GcR3o=',
+    public_key: 'p2',
     ip_address: '10.0.0.51'
   },
 ];

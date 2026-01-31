@@ -110,7 +110,8 @@ async function seedVpnClients() {
     CREATE TABLE IF NOT EXISTS vpn_clients (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(64) NOT NULL,
-      private_key VARCHAR(64) NOT NULL,
+      private_key VARCHAR(64) NULL,
+      public_key VARCHAR(64) NULL,
       ip_address inet NOT NULL
     );
   `;
@@ -118,8 +119,8 @@ async function seedVpnClients() {
   const insertedVpnClients = await Promise.all(
     vpn_clients.map(
       (client) => sql`
-        INSERT INTO vpn_clients (name, private_key, ip_address)
-        VALUES (${client.name}, ${client.private_key}, ${client.ip_address})
+        INSERT INTO vpn_clients (name, private_key, public_key, ip_address)
+        VALUES (${client.name}, ${client.private_key}, ${client.public_key}, ${client.ip_address})
         ON CONFLICT (id) DO NOTHING;
       `,
     ),

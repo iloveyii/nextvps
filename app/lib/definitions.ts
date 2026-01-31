@@ -86,6 +86,7 @@ export type VpnField = {
   id: string;
   name: string;
   private_key: string;
+  public_key: string;
   ip_address: any;
 };
 
