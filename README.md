@@ -73,3 +73,7 @@
     -d '{"id": 1, "item": "Shoes"}'
 
 ```
+
+- Login to management UI <http://localhost:15672/>
+- Username: guest
+- Password: guest
