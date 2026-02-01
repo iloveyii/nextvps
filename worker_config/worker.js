@@ -23,19 +23,15 @@ async function connectWithRetry() {
       console.log("🟢 Worker ready");
 
       ch.consume(QUEUE, async (msg) => {
-        await delay(15000); // 15s delay per job
+        await delay(3000); // 15s delay per job
         const order = JSON.parse(msg.content.toString());
         console.log("📦 Processing order:", order);
-
-        await new Promise((res) => setTimeout(res, 3000));
-
-        console.log("✅ VPN processed:", order);
-        // const keys = await generateWireguardKeys();
-        // console.log("🔐 Keys generated:", keys);
         const configs = await getVpnConfigFromDb();
         console.log("configs::", configs);
         const clients = await getClientsFromDb();
         console.log("Clients::", clients);
+        console.log("✅ VPN processed:", order);
+
         ch.ack(msg);
       });
 

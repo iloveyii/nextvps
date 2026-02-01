@@ -35,7 +35,7 @@ export default function Modal({
       <div className="modal-dialog">
         <div className="modal-content bg-white">
           <div className="modal-header">
-            <h5 className="modal-title">User Details</h5>
+            <h5 className="modal-title">VPN Details</h5>
             <button
               type="button"
               className="btn-close"
@@ -44,14 +44,9 @@ export default function Modal({
           </div>
           <div className="modal-body">
             {client && (
-              <>
-                <p>
-                  <strong>Name:</strong> {client.name}
-                </p>
-                <p>
-                  <strong>Email:</strong> {client.id}
-                </p>
-              </>
+              <p>
+                <strong>Name:</strong> {client.name}
+              </p>
             )}
             {children}
           </div>

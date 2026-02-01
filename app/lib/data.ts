@@ -226,6 +226,7 @@ export async function fetchVpnClients() {
         id,
         name,
         private_key,
+        public_key,
         ip_address
       FROM vpn_clients
       ORDER BY ip_address ASC
@@ -249,6 +250,23 @@ export async function findVpnIp(ip:string) {
       `;
       console.log('Inside findVpnIp::', found_ip);
       return found_ip[0]?.ip_address || null;;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to find vpn ip.');
+  }
+}
+
+export async function findVpnClientById(id:string) {
+  try {
+        const client = await sql<any>`
+        SELECT
+          *
+          FROM vpn_clients
+          WHERE id = ${id}
+          LIMIT 1
+      `;
+      console.log('Inside findVpnClientById::', client);
+      return client || null;;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to find vpn ip.');

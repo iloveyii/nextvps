@@ -8,16 +8,22 @@ import ConfigBox from "./ConfigBox";
 export default function Table(props: { vpn_clients: VpnField[] }) {
   const { vpn_clients } = props;
   const [selectedClient, setSelectedClient] = useState<VpnField | null>(null);
-  const config = `[Interface]
-PrivateKey = CA0WbOdOdl9UsUSfVKwTqr6WSXTkA1BVTAIgP9GcR3o=
-Address = 10.0.0.51/32
+  const [config, setConfig] = useState("");
+  const setSelectedClientFunc = async (client: VpnField) => {
+    console.log("Current client::", client);
+    const _config = `[Interface]
+PrivateKey = ${client.private_key}
+Address = ${client.ip_address}/32
 DNS = 1.1.1.1
 
 [Peer]
-PublicKey = hY3xQjszuZtAWkDXXAA2qPIEfHukkWeYKFRMaINPUlU=
+PublicKey = ${client.public_key}
 Endpoint = 208.87.134.106:51820
 AllowedIPs = 0.0.0.0/0
 PersistentKeepalive = 25`;
+    setConfig(_config);
+    setSelectedClient(client);
+  };
 
   return (
     <div className="table mt-3 mt-md-5">
@@ -55,7 +61,7 @@ PersistentKeepalive = 25`;
               <td>
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => setSelectedClient(client)}
+                  onClick={() => setSelectedClientFunc(client)}
                 >
                   View
                 </button>

@@ -13,16 +13,7 @@ export default function Form() {
   const classBtn = clsx("btn btn-primary px-1 px-md-3", {
     disabled: status === "progress",
   });
-  const createVpnClient = () => {
-    setStatus("progress");
-    setTimeout(() => {
-      setStatus("completed");
-    }, 3000);
-    return {
-      message: null,
-      errors: { vpn: ["Name cannot be empty"] },
-    };
-  };
+
   const initialState: State = {
     message: null,
     errors: { status: ["completed"] },
