@@ -22,7 +22,7 @@ services:
 
   nextjs:
     build: ./nextjs-app
-    container_name: nextjs-app
+    container_name: nextjs-app-test
     ports:
       - "3003:3000"
     environment:
@@ -30,9 +30,19 @@ services:
     depends_on:
       - rabbitmq
 
-  worker:
-    build: ./worker
-    container_name: order-worker
+  worker_vpn_add:
+    build: ./worker_vpn
+    container_name: add-vpn-client-worker
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      POSTGRES_URL: "${POSTGRES_URL}"
+    depends_on:
+      - rabbitmq
+      - nextjs
+
+  worker_vpn_config:
+    build: ./worker_config
+    container_name: create-vpn-server-config-worker
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
       POSTGRES_URL: "${POSTGRES_URL}"

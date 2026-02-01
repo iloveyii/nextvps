@@ -2,6 +2,7 @@ const amqp = require("amqplib");
 const postgres = require("postgres");
 const { exec } = require("child_process");
 const util = require("util");
+const { producer } = require("./producer");
 
 const RABBITMQ_URL = process.env.RABBITMQ_URL;
 const QUEUE = "vpn";
@@ -34,6 +35,7 @@ async function connectWithRetry() {
 
         console.log("🔐 Keys generated:", keys);
         await updateDb(order.ip, keys.privateKey, keys.publicKey);
+        await producer(order.ip);
         ch.ack(msg);
       });
 
