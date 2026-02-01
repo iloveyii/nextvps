@@ -159,4 +159,76 @@ const vpn_clients = [
   },
 ];
 
-export { users, customers, invoices, revenue, vpn_clients };
+const configs = [
+  // Server Identity Keys
+  {
+    key: 'PrivateKey',
+    value: process.env.SERVER_PRIVATE_KEY,
+    category: 'wg',
+    description: 'Server Private Key'
+  },
+  {
+    key: 'PublicKey',
+    value: 'hY3xQjszuZtAWkDXXAA2qPIEfHukkWeYKFRMaINPUlU',
+    category: 'keys',
+    description: 'Server Public Key'
+  },
+  {
+    key: 'ListenPort',
+    value: '51820',
+    category: 'wg',
+    description: 'Server IP address and subnet'
+  },
+  
+  // Network Configuration
+  {
+    key: 'Address',
+    value: '10.0.0.1/24',
+    category: 'wg',
+    description: 'Server IP address and subnet'
+  },
+  
+  // Configuration Management
+  {
+    key: 'SaveConfig',
+    value: 'true',
+    category: 'wg',
+    description: 'Automatically save configuration changes'
+  },
+  
+  // Firewall and Network Rules (PostUp)
+  {
+    key: 'PostUp',
+    value: 'ufw allow 51820/udp',
+    category: 'wg',
+    description: 'Allow WireGuard port through firewall'
+  },
+  {
+    key: 'PostUp',
+    value: 'sysctl -w net.ipv4.ip_forward=1',
+    category: 'wg',
+    description: 'Enable IP forwarding'
+  },
+  {
+    key: 'PostUp',
+    value: 'iptables -t nat -A POSTROUTING -o enp3s0 -j MASQUERADE',
+    category: 'wg',
+    description: 'Enable NAT masquerading for outbound traffic'
+  },
+  
+  // Cleanup Rules (PostDown)
+  {
+    key: 'PostDown',
+    value: 'ufw delete allow 51820/udp',
+    category: 'wg',
+    description: 'Remove firewall rule on shutdown'
+  },
+  {
+    key: 'PostDown',
+    value: 'iptables -t nat -D POSTROUTING -o enp3s0 -j MASQUERADE',
+    category: 'wg',
+    description: 'Remove NAT masquerading rule on shutdown'
+  }
+];
+
+export { users, customers, invoices, revenue, vpn_clients, configs };
