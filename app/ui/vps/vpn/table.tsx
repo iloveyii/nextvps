@@ -1,8 +1,23 @@
-import { fetchVpnClients } from "@/app/lib/data";
-import { tr } from "zod/v4/locales";
+"use client";
 
-export default async function Table() {
-  const vpn_clients = await fetchVpnClients();
+import { VpnField } from "@/app/lib/definitions";
+import Modal from "@/app/ui/vps/vpn/modal";
+import { useState } from "react";
+import ConfigBox from "./ConfigBox";
+
+export default function Table(props: { vpn_clients: VpnField[] }) {
+  const { vpn_clients } = props;
+  const [selectedClient, setSelectedClient] = useState<VpnField | null>(null);
+  const config = `[Interface]
+PrivateKey = CA0WbOdOdl9UsUSfVKwTqr6WSXTkA1BVTAIgP9GcR3o=
+Address = 10.0.0.51/32
+DNS = 1.1.1.1
+
+[Peer]
+PublicKey = hY3xQjszuZtAWkDXXAA2qPIEfHukkWeYKFRMaINPUlU=
+Endpoint = 208.87.134.106:51820
+AllowedIPs = 0.0.0.0/0
+PersistentKeepalive = 25`;
 
   return (
     <div className="table mt-3 mt-md-5">
@@ -37,11 +52,21 @@ export default async function Table() {
               <td>{client.name}</td>
               <td>{client.ip_address}</td>
               <td>Date</td>
-              <td>Edit</td>
+              <td>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => setSelectedClient(client)}
+                >
+                  View
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Modal client={selectedClient} onClose={() => setSelectedClient(null)}>
+        <ConfigBox configText={config} />
+      </Modal>
     </div>
   );
 }

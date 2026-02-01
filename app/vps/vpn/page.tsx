@@ -5,8 +5,11 @@ import RecentAlerts from "@/app/ui/vps/recent-alerts";
 import QuickActions from "@/app/ui/vps/quick-actions";
 import Banner from "@/app/ui/vps/vpn/banner";
 import Table from "@/app/ui/vps/vpn/table";
+import { fetchVpnClients } from "@/app/lib/data";
 
-export default function Page() {
+export default async function Page() {
+  const vpn_clients = await fetchVpnClients();
+
   return (
     <div className="content row py-4">
       <div className="col-sm-3 g-0">
@@ -18,7 +21,7 @@ export default function Page() {
             <div className="col-sm-12">
               <div className="register">
                 <Banner />
-                <Table />
+                <Table vpn_clients={vpn_clients} />
               </div>
             </div>
           </div>

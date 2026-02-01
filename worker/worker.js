@@ -7,6 +7,7 @@ const RABBITMQ_URL = process.env.RABBITMQ_URL;
 const QUEUE = "vpn";
 const execAsync = util.promisify(exec);
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 async function connectWithRetry() {
   while (true) {
@@ -17,8 +18,12 @@ async function connectWithRetry() {
 
       await ch.assertQueue(QUEUE);
       console.log("🟢 Connected to RabbitMQ. Waiting for orders...");
+      // Only give worker 1 job at a time
+      ch.prefetch(1);
+      console.log("🟢 Worker ready");
 
       ch.consume(QUEUE, async (msg) => {
+        await delay(15000); // 15s delay per job
         const order = JSON.parse(msg.content.toString());
         console.log("📦 Processing order:", order);
 

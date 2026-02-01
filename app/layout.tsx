@@ -1,6 +1,7 @@
 import "@/app/vps/main.css";
 // import "@/app/ui/global.css";
 import { inter } from "@/app/ui/fonts";
+import LayoutWrapper from "./LayoutWrapper";
 
 export default function RootLayout({
   children,
@@ -25,7 +26,9 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
         />
       </head>
-      <body className={` ${inter.className} antialiased`}>{children}</body>
+      <body className={` ${inter.className} antialiased`}>
+        <LayoutWrapper>{children}</LayoutWrapper>
+      </body>
     </html>
   );
 }
