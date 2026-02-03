@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useActionState } from "react";
 import { createVpn, State } from "@/app/lib/actions";
 import Err from "@/app/ui/invoices/err";
