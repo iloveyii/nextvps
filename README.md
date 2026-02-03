@@ -32,6 +32,9 @@
 - Setup Vercel db
 - Seed data
 - Fetch data
+- Run `docker compose up`
+- Url <http://localhost:8080/>
+- username: neondb_owner, password: npg_ft6wHEo1YIJW , database: neondb
 
 ## Streaming
 
