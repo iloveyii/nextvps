@@ -3,7 +3,7 @@ import { z } from "zod";
 import postgres from 'postgres';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { signIn } from '@/app/auth';
+import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 
 const FormSchema = z.object({
