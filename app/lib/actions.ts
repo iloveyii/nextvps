@@ -126,9 +126,6 @@ export async function createVpn(prevState: State, formData:FormData) {
       console.log(error);
   }
   revalidatePath('/vps/vpn');
-  setTimeout(()=>{
-    revalidatePath('/vps/vpn');
-  }, 20000);
 }
 
 export async function generate_private_key() {
