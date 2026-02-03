@@ -7,6 +7,7 @@
 ## Demo
 
 - Live <https://nextvps.vercel.app/dashboard>
+- Clone `git clone ssh://ali@g10:2222/mnt/d/repos/nextvps`
 
 ## Create
 
