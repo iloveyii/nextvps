@@ -62,3 +62,4 @@
 ## WG
 
 - Create menu
+- Create page
