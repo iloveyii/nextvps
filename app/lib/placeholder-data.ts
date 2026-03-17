@@ -144,4 +144,13 @@ const revenue = [
   { month: 'Dec', revenue: 4800 },
 ];
 
-export { users, customers, invoices, revenue };
+const wg_clients = [
+  {
+    id: '410544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'Ali',
+    email: 'user@nextmail.com',
+    device_tag: 'redmi',
+  },
+];
+
+export { users, customers, invoices, revenue, wg_clients };

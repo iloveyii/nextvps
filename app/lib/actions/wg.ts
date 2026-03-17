@@ -11,26 +11,18 @@ const FormSchema = z.object({
   customerId: z.string({
     invalid_type_error: 'Please select a customer'
   }),
-  amount: z.coerce.number().gt(0, {message: 'Please enter and amount greater than $0'}),
-  status: z.enum(['pending', 'paid'], {
-    invalid_type_error: 'Please select an invoice status'
+  name: z.string(),
+  email: z.string(),
+  status: z.enum(['enabled', 'disabled'], {
+    invalid_type_error: 'Please select a status'
   }),
   date: z.string()
 });
 
-const CreateInvoice = FormSchema.omit({id:true, date:true});
+const CreateWg = FormSchema.omit({id:true, date:true});
 // Use Zod to update the expected types
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-
-export type State = {
-  errors?: {
-    customerId?: string[];
-    amount?: string[];
-    status?: string[];
-  };
-  message?: string | null;
-};
 
 export type StateWg = {
   errors?: {
@@ -42,11 +34,13 @@ export type StateWg = {
   message?: string | null;
 };
 
-export async function createInvoice(prevState: State, formData:FormData) {
+export async function createWg(prevState: StateWg, formData:FormData) {
 
-  const validatedFields = CreateInvoice.safeParse ({
+  const validatedFields = CreateWg.safeParse ({
     customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
+    name: formData.get('name'),
+    enail: formData.get('email'),
+    device_tag: formData.get('device_tag'),
     status: formData.get('status')
   });
   // If form validation fails, return errors early. Otherwise, continue.
@@ -57,14 +51,13 @@ export async function createInvoice(prevState: State, formData:FormData) {
     };
   }
   // Prepare data for insertion into the database
-  const { customerId, amount, status } = validatedFields.data;
-  const amountInCents = amount * 100;
+  const { customerId, name, email, status } = validatedFields.data;
   const date = new Date().toISOString().split('T')[0];
 
   try {
     await sql`
-      INSERT INTO invoices (customer_id, amount, status, date)
-      VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+      INSERT INTO wg_clients (customer_id, name, email, status, date)
+      VALUES (${customerId}, ${name}, ${email}, ${status}, ${date})
     `;
   } catch (error) {
     // We'll also log the error to the console for now
@@ -74,11 +67,11 @@ export async function createInvoice(prevState: State, formData:FormData) {
     };
   }
   
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
+  revalidatePath('/dashboard/wg');
+  redirect('/dashboard/wg');
 }
 
-export async function updateInvoice(id: string, formData: FormData) {
+export async function updateWg(id: string, formData: FormData) {
   const { customerId, amount, status } = UpdateInvoice.parse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
@@ -103,7 +96,7 @@ export async function updateInvoice(id: string, formData: FormData) {
   redirect('/dashboard/invoices');
 }
 
-export async function deleteInvoice(id: string) {
+export async function deleteWg(id: string) {
   await sql`DELETE FROM invoices WHERE id = ${id}`;
   revalidatePath('/dashboard/invoices');
 }

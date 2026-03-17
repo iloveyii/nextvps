@@ -5,11 +5,13 @@ import Link from "next/link";
 import {
   CheckIcon,
   ClockIcon,
-  CurrencyDollarIcon,
   UserCircleIcon,
+  AtSymbolIcon,
+  TagIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
-import { createInvoice, State } from "@/app/lib/actions";
+import { createWg, StateWg } from "@/app/lib/actions/wg";
 import { useActionState } from "react";
 import Err from "@/app/ui/invoices/err";
 
@@ -18,8 +20,8 @@ export default function Form({
 }: {
   readonly customers: CustomerField[];
 }) {
-  const initialState: State = { message: null, errors: {} };
-  const [state, formAction] = useActionState(createInvoice, initialState);
+  const initialState: StateWg = { message: null, errors: {} };
+  const [state, formAction] = useActionState(createWg, initialState);
   return (
     <form action={formAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -46,7 +48,7 @@ export default function Form({
           </div>
         </div>
 
-        {/* Invoice Amount */}
+        {/* Customer Email */}
         <div className="mb-4">
           <label htmlFor="amount" className="mb-2 block text-sm font-medium">
             Email
@@ -61,10 +63,38 @@ export default function Form({
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="amount-error"
               />
-              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
             <div id="amount-error" aria-live="polite" aria-atomic="true">
               {state.errors?.amount && <Err errors={state.errors.amount} />}
+            </div>
+          </div>
+        </div>
+
+        {/* Device Tag */}
+        <div className="mb-4">
+          <label
+            htmlFor="device_tag"
+            className="mb-2 block text-sm font-medium"
+          >
+            Device Tag
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="device_tag"
+                name="device_tag"
+                type="text"
+                placeholder="Enter customer device tag"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                aria-describedby="device_tag-error"
+              />
+              <TagIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+            <div id="device_tag-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.device_tag && (
+                <Err errors={state.errors.device_tag} />
+              )}
             </div>
           </div>
         </div>
@@ -76,30 +106,30 @@ export default function Form({
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
-                  id="pending"
+                  id="enabled"
                   name="status"
                   type="radio"
-                  value="pending"
+                  value="enabled"
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                   aria-describedby="status-error"
                 />
                 <label
-                  htmlFor="pending"
+                  htmlFor="enabled"
                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
                 >
-                  Disabled <ClockIcon className="h-4 w-4" />
+                  Disabled <XMarkIcon className="h-4 w-4" />
                 </label>
               </div>
               <div className="flex items-center">
                 <input
-                  id="paid"
+                  id="disabled"
                   name="status"
                   type="radio"
-                  value="paid"
+                  value="disabled"
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                 />
                 <label
-                  htmlFor="paid"
+                  htmlFor="disabled"
                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
                 >
                   Enabled <CheckIcon className="h-4 w-4" />
@@ -119,7 +149,7 @@ export default function Form({
         >
           Cancel
         </Link>
-        <Button type="submit">Create Invoice</Button>
+        <Button type="submit">Create Client</Button>
       </div>
     </form>
   );
