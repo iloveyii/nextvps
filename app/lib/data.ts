@@ -6,6 +6,7 @@ import {
   InvoicesTable,
   LatestInvoiceRaw,
   Revenue,
+  WgClient,
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -44,6 +45,24 @@ export async function fetchLatestInvoices() {
       amount: formatCurrency(invoice.amount),
     }));
     return latestInvoices;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest invoices.');
+  }
+}
+
+
+export async function fetchWgClients() {
+  try {
+    const wg_clients = await sql<WgClient[]>`
+    SELECT 
+      c.name as customer_name,
+      c.email as customer_email,
+      w.device_tag, w.status, w.ip_address
+    FROM wg_clients w
+    JOIN customers c ON w.customer_id = c.id`;
+
+    return wg_clients;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest invoices.');
@@ -214,5 +233,45 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+
+export async function fetchFilteredWgClients(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const clients = await sql<WgClient[]>`
+      SELECT
+        w.id,
+        w.device_tag,
+        w.private_key,
+        w.public_key,
+        w.ip_address,
+        w.status,
+        w.updated_at,
+        c.id as customer_id,
+        c.name,
+        c.email,
+        c.image_url
+      FROM wg_clients w
+      JOIN customers c ON w.customer_id = c.id
+      WHERE
+        c.name ILIKE ${`%${query}%`} OR
+        c.email ILIKE ${`%${query}%`} OR
+        w.device_tag ILIKE ${`%${query}%`} OR
+        w.ip_address::text ILIKE ${`%${query}%`} OR
+        w.status ILIKE ${`%${query}%`}
+      ORDER BY c.name, w.device_tag
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return clients;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch WireGuard clients.');
   }
 }

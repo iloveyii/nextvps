@@ -86,3 +86,13 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type WgClient = {
+  id: string;
+  name: string;
+  image_url:string;
+  email: string;
+  device_tag: string;
+  status: string;
+  ip_address: string;
+};
