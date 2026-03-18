@@ -4,12 +4,9 @@ import { CustomerField } from "@/app/lib/definitions";
 import Link from "next/link";
 import {
   CheckIcon,
-  ClockIcon,
   UserCircleIcon,
-  AtSymbolIcon,
   TagIcon,
   XMarkIcon,
-  KeyIcon,
   LockClosedIcon,
   LockOpenIcon,
 } from "@heroicons/react/24/outline";
@@ -18,7 +15,6 @@ import { createWg, StateWg } from "@/app/lib/actions/wg";
 import { useActionState, useState } from "react";
 import Err from "@/app/ui/invoices/err";
 import CustomerCombobox from "../customers/customer-combobox";
-import Select from "react-select";
 
 export default function Form({
   customers,
@@ -28,11 +24,7 @@ export default function Form({
   const initialState: StateWg = { message: null, errors: {} };
   const [state, formAction] = useActionState(createWg, initialState);
   const [selectedCustomer, setSelectedCustomer] = useState("");
-  const customerOptions = customers.map((customer) => ({
-    value: customer.id,
-    label: customer.name,
-    email: customer.email,
-  }));
+  console.log(state);
 
   // In your form
   return (
@@ -44,17 +36,23 @@ export default function Form({
             Choose customer
           </label>
           <div className="relative">
+            <input
+              type="hidden"
+              id="customer_id"
+              name="customer_id"
+              value={selectedCustomer}
+            />
             <CustomerCombobox
               customers={customers}
               value={selectedCustomer}
               onChange={setSelectedCustomer}
-              error={state.errors?.customerId}
+              error={state.errors?.customer_id}
             />
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <div id="customer-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.customerId && (
-              <Err errors={state.errors.customerId} />
+            {state.errors?.customer_id && (
+              <Err errors={state.errors.customer_id} />
             )}
           </div>
         </div>
@@ -154,7 +152,9 @@ export default function Form({
             <LockOpenIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <div id="public_key-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.name && <Err errors={state.errors.name} />}
+            {state.errors?.public_key && (
+              <Err errors={state.errors.public_key} />
+            )}
           </div>
         </div>
 
@@ -179,7 +179,9 @@ export default function Form({
               <LockClosedIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
             <div id="private_key-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.email && <Err errors={state.errors.email} />}
+              {state.errors?.private_key && (
+                <Err errors={state.errors.private_key} />
+              )}
             </div>
           </div>
         </div>

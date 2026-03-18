@@ -106,8 +106,7 @@ async function seedWgClients() {
   await sql`
     CREATE TABLE IF NOT EXISTS wg_clients (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email TEXT NOT NULL UNIQUE,
+      customer_id UUID NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
       device_tag TEXT NOT NULL,
       private_key VARCHAR(64) NULL,
       public_key VARCHAR(64) NULL,
@@ -120,8 +119,8 @@ async function seedWgClients() {
   const insertedWgClients = await Promise.all(
     wg_clients.map(async (client) => {
       return sql`
-        INSERT INTO wg_clients (id, name, email, device_tag, status)
-        VALUES (${client.id}, ${client.name}, ${client.email}, ${client.device_tag}, ${client.status})
+        INSERT INTO wg_clients (id, customer_id, device_tag, status)
+        VALUES (${client.id}, ${client.customer_id}, ${client.device_tag}, ${client.status})
         ON CONFLICT (id) DO NOTHING;
       `;
     }),
