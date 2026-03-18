@@ -10,7 +10,10 @@ import {
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { Button } from "@/app/ui/button";
-import { updateWg } from "@/app/lib/actions/wg";
+import { StateWg, updateWg } from "@/app/lib/actions/wg";
+import { useActionState, useState } from "react";
+import CustomerCombobox from "../customers/customer-combobox";
+import Err from "../invoices/err";
 
 export default function EditWgForm({
   wg,
@@ -19,33 +22,43 @@ export default function EditWgForm({
   readonly wg: WgClientForm;
   readonly clients: WgClient[];
 }) {
-  const updateWgClientWithId = updateWg.bind(null, wg.id);
+  const initialState: StateWg = { message: null, errors: {} };
+  const [state, formAction] = useActionState(updateWg, initialState);
+  const [selectedCustomer, setSelectedCustomer] = useState(wg.id);
+  console.log(state);
 
   return (
-    <form action={updateWgClientWithId}>
+    <form action={formAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
-          <label htmlFor="customer" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="customer_id"
+            className="mb-2 block text-sm font-medium"
+          >
             Choose customer
           </label>
           <div className="relative">
-            <select
-              id="customer"
-              name="customerId"
-              className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue={wg.customer_id}
-            >
-              <option value="" disabled>
-                Select a customer
-              </option>
-              {clients.map((wg) => (
-                <option key={wg.id} value={wg.id}>
-                  {wg.name}
-                </option>
-              ))}
-            </select>
+            <input type="hidden" id="id" name="id" value={wg.id} />
+            <input
+              type="hidden"
+              id="customer_id"
+              name="customer_id"
+              value={selectedCustomer}
+            />
+            <CustomerCombobox
+              customers={clients}
+              value={selectedCustomer}
+              onChange={setSelectedCustomer}
+              error={state.errors?.customer_id}
+            />
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+
+          <div id="customer_id-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.customer_id && (
+              <Err errors={state.errors.customer_id} />
+            )}
           </div>
         </div>
 
@@ -151,34 +164,34 @@ export default function EditWgForm({
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
-                  id="active"
+                  id="enabled"
                   name="status"
                   type="radio"
-                  value="active"
-                  defaultChecked={wg.status === "active"}
+                  value="enabled"
+                  defaultChecked={wg.status === "enabled"}
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-500"
                 />
                 <label
-                  htmlFor="active"
+                  htmlFor="enabled"
                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700"
                 >
-                  Active <CheckIcon className="h-4 w-4" />
+                  Enabled <CheckIcon className="h-4 w-4" />
                 </label>
               </div>
               <div className="flex items-center">
                 <input
-                  id="inactive"
+                  id="disabled"
                   name="status"
                   type="radio"
-                  value="inactive"
-                  defaultChecked={wg.status === "inactive" || !wg.status}
+                  value="disabled"
+                  defaultChecked={wg.status === "disabled" || !wg.status}
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500"
                 />
                 <label
-                  htmlFor="inactive"
+                  htmlFor="disabled"
                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
                 >
-                  Inactive <XMarkIcon className="h-4 w-4" />
+                  Disabled <XMarkIcon className="h-4 w-4" />
                 </label>
               </div>
             </div>
@@ -188,7 +201,7 @@ export default function EditWgForm({
 
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/wg-clients"
+          href="/dashboard/wg"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Cancel

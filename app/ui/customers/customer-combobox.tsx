@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import { CustomerField } from "@/app/lib/definitions";
+import { CustomerField, WgClient } from "@/app/lib/definitions";
 
 export default function CustomerCombobox({
   customers,
@@ -12,7 +12,7 @@ export default function CustomerCombobox({
   value,
   error,
 }: {
-  readonly customers: CustomerField[];
+  readonly customers: WgClient[];
   readonly onChange: (value: string) => void;
   readonly value: string;
   readonly error?: string[];

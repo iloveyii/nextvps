@@ -19,7 +19,7 @@ const FormSchema = z.object({
 });
 
 const CreateWg = FormSchema.omit({id:true, date:true});
-const UpdateInvoice = FormSchema.omit({ id: true, date: true });
+const UpdateWg = FormSchema.omit({ id: true, date: true });
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
 
 export type StateWg = {
@@ -70,42 +70,24 @@ export async function createWg(prevState: StateWg, formData:FormData) {
   redirect('/dashboard/wg');
 }
 
-export async function fetchWgClients() {
-  try {
-    const data = await sql<LatestInvoiceRaw[]>`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      ORDER BY invoices.date DESC
-      LIMIT 5`;
-
-    const latestInvoices = data.map((invoice) => ({
-      ...invoice,
-      amount: formatCurrency(invoice.amount),
-    }));
-    return latestInvoices;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest invoices.');
-  }
-}
-
 export async function deleteWg(id: string) {
   await sql`DELETE FROM wg_clients WHERE id = ${id}`;
   revalidatePath('/dashboard/wg');
 }
 
-export async function updateWg(id: string, formData: FormData) {
-  const { customer_id, device_tag, status } = UpdateInvoice.parse({
-    customerId: formData.get('customer_id'),
+export async function updateWg(prevState: StateWg, formData: FormData) {
+  console.log(formData);
+  const { customer_id, device_tag, status } = UpdateWg.parse({
+    customer_id: formData.get('customer_id'),
     device_tag: formData.get('device_tag'),
-    status: formData.get('status'),
+    status: formData.get('status')
   });
  
   try {
+    const id =  formData.get('id');
     await sql`
       UPDATE wg_clients
-      SET customer_id = ${customer_id}, device_tag = ${device_tag}, status = ${status}
+      SET device_tag = ${device_tag}, status = ${status}
       WHERE id = ${id}
     `;
     
@@ -139,5 +121,30 @@ export async function fetchWgById(id: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
+  }
+}
+
+export async function fetchWgClients() {
+  try {
+    const clients = await sql<WgClient[]>`
+      SELECT
+        w.id,
+        w.device_tag,
+        w.private_key,
+        w.public_key,
+        w.ip_address,
+        w.status,
+        c.id as customer_id,
+        c.name,
+        c.email,
+        c.image_url
+      FROM wg_clients w
+      JOIN customers c ON w.customer_id = c.id
+      ORDER BY w.updated_at DESC
+      LIMIT 5`;
+    return clients;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest invoices.');
   }
 }
