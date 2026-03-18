@@ -21,7 +21,7 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({id:true, date:true});
 // Use Zod to update the expected types
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: false});
 
 export type State = {
   errors?: {

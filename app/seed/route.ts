@@ -2,10 +2,9 @@ import bcrypt from 'bcrypt';
 import postgres from 'postgres';
 import { invoices, customers, revenue, users, wg_clients, configs } from '../lib/placeholder-data';
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
 
 async function seedUsers() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -30,7 +29,6 @@ async function seedUsers() {
 }
 
 async function seedInvoices() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
   await sql`
     CREATE TABLE IF NOT EXISTS invoices (
@@ -56,7 +54,6 @@ async function seedInvoices() {
 }
 
 async function seedCustomers() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
   await sql`
     CREATE TABLE IF NOT EXISTS customers (
@@ -102,7 +99,6 @@ async function seedRevenue() {
 }
 
 async function seedWgClients() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await sql`
     CREATE TABLE IF NOT EXISTS wg_clients (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -111,15 +107,16 @@ async function seedWgClients() {
       device_tag TEXT NOT NULL,
       private_key VARCHAR(64) NULL,
       public_key VARCHAR(64) NULL,
-      ip_address inet NULL
+      ip_address inet NULL,
+      status TEXT NULL
     );
   `;
 
   const insertedWgClients = await Promise.all(
     wg_clients.map(async (client) => {
       return sql`
-        INSERT INTO wg_clients (id, name, email, device_tag)
-        VALUES (${client.id}, ${client.name}, ${client.email}, ${client.device_tag})
+        INSERT INTO wg_clients (id, name, email, device_tag, status)
+        VALUES (${client.id}, ${client.name}, ${client.email}, ${client.device_tag}, ${client.status})
         ON CONFLICT (id) DO NOTHING;
       `;
     }),
@@ -129,7 +126,6 @@ async function seedWgClients() {
 }
 
 async function seedConfig() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await sql`
     DROP TABLE IF EXISTS config;
   `;

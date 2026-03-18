@@ -35,6 +35,10 @@
 - Run `docker compose up`
 - Url <http://localhost:8080/>
 - username: neondb_owner, password: npg_ft6wHEo1YIJW , database: neondb
+- Command line `docker exec -it postgres-neon psql -h localhost -U neondb_owner -d neondb`
+- Command line `docker exec -it postgres-neon psql -h localhost -U neondb_owner -d neondb -W` ask password
+- Command line `docker exec -it postgres-neon psql -h 192.168.100.21 -U neondb_owner -d neondb`
+- For pgadmin web app use: host: 192.168.100.21
 
 ## Streaming
 

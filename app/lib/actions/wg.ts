@@ -8,11 +8,15 @@ import { AuthError } from 'next-auth';
 
 const FormSchema = z.object({
   id: z.string(),
-  customerId: z.string({
-    invalid_type_error: 'Please select a customer'
-  }),
-  name: z.string(),
-  email: z.string(),
+  name: z.string({
+    required_error: 'Please enter a name',
+    invalid_type_error: 'Please enter a valid name'
+  }).min(1, 'Name is required'),
+  email: z.string({
+    required_error: 'Please enter an email',
+    invalid_type_error: 'Please enter a valid email'
+  }).email('Please enter a valid email'),
+  device_tag: z.string(),
   status: z.enum(['enabled', 'disabled'], {
     invalid_type_error: 'Please select a status'
   }),
@@ -20,9 +24,8 @@ const FormSchema = z.object({
 });
 
 const CreateWg = FormSchema.omit({id:true, date:true});
-// Use Zod to update the expected types
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
 
 export type StateWg = {
   errors?: {
@@ -35,30 +38,33 @@ export type StateWg = {
 };
 
 export async function createWg(prevState: StateWg, formData:FormData) {
+  console.log('formData', formData);
 
   const validatedFields = CreateWg.safeParse ({
-    customerId: formData.get('customerId'),
     name: formData.get('name'),
-    enail: formData.get('email'),
+    email: formData.get('email'),
     device_tag: formData.get('device_tag'),
     status: formData.get('status')
   });
-  // If form validation fails, return errors early. Otherwise, continue.
-  if(!validatedFields.success) {
+
+  if(! validatedFields.success) {
+    console.log('if part', validatedFields);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Create Invoice.',
     };
+  } else {
+    console.log('else part', validatedFields.data);
   }
-  // Prepare data for insertion into the database
-  const { customerId, name, email, status } = validatedFields.data;
-  const date = new Date().toISOString().split('T')[0];
 
   try {
+    const {name, email, device_tag, status } = validatedFields.data;
+    const date = new Date().toISOString().split('T')[0];
     await sql`
-      INSERT INTO wg_clients (customer_id, name, email, status, date)
-      VALUES (${customerId}, ${name}, ${email}, ${status}, ${date})
+      INSERT INTO wg_clients (name, email, device_tag, status, date)
+      VALUES (${name}, ${email}, ${device_tag}, ${status}, ${date})
     `;
+    console.error('Inserted::', `${name}, ${email}, ${device_tag} ${status}, ${date}`);
   } catch (error) {
     // We'll also log the error to the console for now
     console.error(error);

@@ -152,7 +152,8 @@ const wg_clients = [
     device_tag: 'g10',
     private_key: 'sGiraxZl820TWwlRbJGaeLDNZLPKHcK09eX121VkhWQ=',
     public_key: 'p1',
-    ip_address: '10.0.0.10'
+    ip_address: '10.0.0.10',
+    status: 'enabled'
   },
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442b',
@@ -161,7 +162,8 @@ const wg_clients = [
     device_tag: 'Pro',
     private_key: 'CA0WbOdOdl9UsUSfVKwTqr6WSXTkA1BVTAIgP9GcR3o=',
     public_key: 'p2',
-    ip_address: '10.0.0.52'
+    ip_address: '10.0.0.52',
+    status: 'enabled'
   },
 ];
 
