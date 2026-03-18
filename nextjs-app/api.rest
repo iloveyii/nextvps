@@ -1,0 +1,11 @@
+### POST Order
+POST http://localhost:3003/api/order
+Content-Type: application/json
+
+{
+  "id": "9e414cc3-b518-4342-9c45-2d468b21410d", 
+  "item": "Shoes",
+  "ip": "10.0.0.12"
+}
+
+

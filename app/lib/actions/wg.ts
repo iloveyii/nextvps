@@ -3,22 +3,19 @@ import { z } from "zod";
 import postgres from 'postgres';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { signIn } from '@/auth';
-import { AuthError } from 'next-auth';
-import { LatestInvoiceRaw, WgClient } from "../definitions";
-import { formatCurrency } from "../utils";
 
 const FormSchema = z.object({
   id: z.string(),
   customer_id: z.string(),
   device_tag: z.string(),
+  ip_address: z.string(),
   status: z.enum(['enabled', 'disabled'], {
     invalid_type_error: 'Please select a status'
   }),
   date: z.string()
 });
 
-const CreateWg = FormSchema.omit({id:true, date:true});
+const CreateWg = FormSchema.omit({id:true, date:true, ip_address: true});
 const UpdateWg = FormSchema.omit({ id: true, date: true });
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
 
@@ -44,7 +41,7 @@ export async function createWg(prevState: StateWg, formData:FormData) {
   if(validatedFields.success) {
     console.log('if part', validatedFields);
   } else {
-    console.log('else part', validatedFields.data);
+    console.log('else part', validatedFields.data, validatedFields.error.flatten().fieldErrors);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Create Invoice.',
@@ -77,9 +74,10 @@ export async function deleteWg(id: string) {
 
 export async function updateWg(prevState: StateWg, formData: FormData) {
   console.log(formData);
-  const { customer_id, device_tag, status } = UpdateWg.parse({
+  const { customer_id, device_tag, status, ip_address } = UpdateWg.parse({
     customer_id: formData.get('customer_id'),
     device_tag: formData.get('device_tag'),
+    ip_address: formData.get('ip_address'),
     status: formData.get('status')
   });
  
@@ -87,7 +85,7 @@ export async function updateWg(prevState: StateWg, formData: FormData) {
     const id =  formData.get('id');
     await sql`
       UPDATE wg_clients
-      SET device_tag = ${device_tag}, status = ${status}
+      SET device_tag = ${device_tag}, status = ${status}, ip_address = ${ip_address}
       WHERE id = ${id}
     `;
     

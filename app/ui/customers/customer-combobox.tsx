@@ -12,7 +12,7 @@ export default function CustomerCombobox({
   value,
   error,
 }: {
-  readonly customers: WgClient[];
+  readonly customers: CustomerField[];
   readonly onChange: (value: string) => void;
   readonly value: string;
   readonly error?: string[];
