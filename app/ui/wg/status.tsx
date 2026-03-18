@@ -1,4 +1,4 @@
-import { CheckIcon, ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 export default function WgStatus({ status }: { readonly status: string }) {

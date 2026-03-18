@@ -275,3 +275,24 @@ export async function fetchFilteredWgClients(
     throw new Error('Failed to fetch WireGuard clients.');
   }
 }
+
+export async function fetchWgPages(query: string) {
+  try {
+    const data = await sql`SELECT COUNT(*)
+    FROM wg_clients w
+    JOIN customers c ON w.customer_id = c.id
+    WHERE
+      c.name ILIKE ${`%${query}%`} OR
+      c.email ILIKE ${`%${query}%`} OR
+      w.device_tag ILIKE ${`%${query}%`} OR
+      w.ip_address::text ILIKE ${`%${query}%`} OR
+      w.status ILIKE ${`%${query}%`}
+  `;
+
+    const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of invoices.');
+  }
+}
