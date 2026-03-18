@@ -15,6 +15,7 @@ import { createWg, StateWg } from "@/app/lib/actions/wg";
 import { useActionState, useState } from "react";
 import Err from "@/app/ui/invoices/err";
 import CustomerCombobox from "../customers/customer-combobox";
+import Select from "react-select";
 
 export default function Form({
   customers,
@@ -24,10 +25,43 @@ export default function Form({
   const initialState: StateWg = { message: null, errors: {} };
   const [state, formAction] = useActionState(createWg, initialState);
   const [selectedCustomer, setSelectedCustomer] = useState("");
+  const customerOptions = customers.map((customer) => ({
+    value: customer.id,
+    label: customer.name,
+    email: customer.email,
+  }));
 
+  // In your form
   return (
     <form action={formAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+        <Select
+          id="customer"
+          name="customerId"
+          options={customerOptions}
+          placeholder="Search for a customer..."
+          isClearable
+          formatOptionLabel={(customer) => (
+            <div className="flex items-center">
+              <span>{customer.label}</span>
+              {customer.email && (
+                <span className="ml-2 text-sm text-gray-500">
+                  ({customer.email})
+                </span>
+              )}
+            </div>
+          )}
+          className="text-sm"
+          styles={{
+            control: (base) => ({
+              ...base,
+              paddingLeft: "1.5rem",
+              borderColor: "#e5e7eb",
+              "&:hover": { borderColor: "#e5e7eb" },
+            }),
+          }}
+        />
+
         <CustomerCombobox
           customers={customers}
           value={selectedCustomer}
