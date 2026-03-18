@@ -68,4 +68,4 @@ async function getClientsFromDb() {
   }
 }
 
-await connectWithRetry();
+connectWithRetry();

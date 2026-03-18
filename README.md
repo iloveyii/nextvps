@@ -78,3 +78,11 @@
 - Login to management UI <http://localhost:15672/>
 - Username: guest
 - Password: guest
+
+## Docker Compose
+
+- Run `DOCKER_BUILDKIT=0 docker compose build`
+- For longer delay in Provenance: run inside respective dir
+  - `docker build -t nextjs_app:latest .`
+  - `docker build -t worker_config:latest .`
+  - `docker build -t worker_add:latest .`

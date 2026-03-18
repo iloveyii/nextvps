@@ -89,4 +89,4 @@ AllowedIPs = ${allowed_ip}/32
   console.log(peer);
 }
 
-await connectWithRetry();
+connectWithRetry();
