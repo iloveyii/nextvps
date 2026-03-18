@@ -148,7 +148,7 @@ const wg_clients = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
     name: 'G10',
-    email: 'user@nextmail.com',
+    email: 'g10@nextmail.com',
     device_tag: 'g10',
     private_key: 'sGiraxZl820TWwlRbJGaeLDNZLPKHcK09eX121VkhWQ=',
     public_key: 'p1',
@@ -157,7 +157,7 @@ const wg_clients = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442b',
     name: 'Mac',
-    email: 'user@nextmail.com',
+    email: 'mac@nextmail.com',
     device_tag: 'Pro',
     private_key: 'CA0WbOdOdl9UsUSfVKwTqr6WSXTkA1BVTAIgP9GcR3o=',
     public_key: 'p2',

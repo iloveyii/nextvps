@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
-import { invoices, customers, revenue, users, wg_clients } from '../lib/placeholder-data';
+import { invoices, customers, revenue, users, wg_clients, configs } from '../lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -128,6 +128,34 @@ async function seedWgClients() {
   return insertedWgClients;
 }
 
+async function seedConfig() {
+  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await sql`
+    DROP TABLE IF EXISTS config;
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS config (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      config_key VARCHAR(64) NOT NULL,
+      config_value VARCHAR(128) NULL,
+      category VARCHAR(64) NULL,
+      description VARCHAR(256) NULL
+    );
+  `;
+
+  const insertedConfig = await Promise.all(
+    configs.map(
+      (config) => sql`
+        INSERT INTO config (config_key, config_value, category, description)
+        VALUES (${config.key}, ${config.value}, ${config.category}, ${config.description})
+        ON CONFLICT (id) DO NOTHING;
+      `,
+    ),
+  );
+
+  return insertedConfig;
+}
+
 export async function GET() {
   try {
     const result = await sql.begin((sql) => [
@@ -135,9 +163,9 @@ export async function GET() {
       seedCustomers(),
       seedInvoices(),
       seedRevenue(),
-      seedWgClients()
+      seedWgClients(),
+      seedConfig()
     ]);
-
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {
     return Response.json({ error }, { status: 500 });
