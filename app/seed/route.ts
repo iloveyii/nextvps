@@ -108,7 +108,10 @@ async function seedWgClients() {
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       email TEXT NOT NULL UNIQUE,
-      device_tag TEXT NOT NULL
+      device_tag TEXT NOT NULL,
+      private_key VARCHAR(64) NULL,
+      public_key VARCHAR(64) NULL,
+      ip_address inet NULL
     );
   `;
 
