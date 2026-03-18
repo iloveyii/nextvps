@@ -1,6 +1,6 @@
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { deleteInvoice } from "@/app/lib/actions";
+import { deleteWg } from "@/app/lib/actions/wg";
 
 export function CreateWg() {
   return (
@@ -14,10 +14,10 @@ export function CreateWg() {
   );
 }
 
-export function UpdateInvoice({ id }: { readonly id: string }) {
+export function UpdateWg({ id }: { readonly id: string }) {
   return (
     <Link
-      href={`/dashboard/invoices/${id}/edit`}
+      href={`/dashboard/wg/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -25,10 +25,10 @@ export function UpdateInvoice({ id }: { readonly id: string }) {
   );
 }
 
-export function DeleteInvoice({ id }: { readonly id: string }) {
-  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+export function DeleteWg({ id }: { readonly id: string }) {
+  const deleteWgWithId = deleteWg.bind(null, id);
   return (
-    <form action={deleteInvoiceWithId}>
+    <form action={deleteWgWithId}>
       <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />

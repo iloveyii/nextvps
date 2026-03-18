@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-import { LatestInvoiceRaw } from "../definitions";
+import { LatestInvoiceRaw, WgClient } from "../definitions";
 import { formatCurrency } from "../utils";
 
 const FormSchema = z.object({
@@ -90,4 +90,54 @@ export async function fetchWgClients() {
   }
 }
 
+export async function deleteWg(id: string) {
+  await sql`DELETE FROM wg_clients WHERE id = ${id}`;
+  revalidatePath('/dashboard/wg');
+}
+
+export async function updateWg(id: string, formData: FormData) {
+  const { customer_id, device_tag, status } = UpdateInvoice.parse({
+    customerId: formData.get('customer_id'),
+    device_tag: formData.get('device_tag'),
+    status: formData.get('status'),
+  });
  
+  try {
+    await sql`
+      UPDATE wg_clients
+      SET customer_id = ${customer_id}, device_tag = ${device_tag}, status = ${status}
+      WHERE id = ${id}
+    `;
+    
+  } catch(error) {
+    console.error(error);
+  }
+
+  revalidatePath('/dashboard/wg');
+  redirect('/dashboard/wg');
+}
+
+export async function fetchWgById(id: string) {
+  try {
+    const clients = await sql<WgClient[]>`
+      SELECT
+        w.id,
+        w.device_tag,
+        w.private_key,
+        w.public_key,
+        w.ip_address,
+        w.status,
+        c.id as customer_id,
+        c.name,
+        c.email,
+        c.image_url
+      FROM wg_clients w
+      JOIN customers c ON w.customer_id = c.id
+      WHERE w.id = ${id};
+    `;
+    return clients.length > 0 ? clients[0]: null;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch invoice.');
+  }
+}

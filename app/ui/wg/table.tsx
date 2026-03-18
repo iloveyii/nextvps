@@ -1,4 +1,4 @@
-import { UpdateInvoice, DeleteInvoice } from "@/app/ui/invoices/buttons";
+import { UpdateWg, DeleteWg } from "@/app/ui/wg/buttons";
 import { fetchFilteredWgClients } from "@/app/lib/data";
 import Image from "next/image";
 import WgStatus from "./status";
@@ -59,8 +59,8 @@ export default async function WgClientsTable({
                     </p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={client.id} />
-                    <DeleteInvoice id={client.id} />
+                    <UpdateWg id={client.id} />
+                    <DeleteWg id={client.id} />
                   </div>
                 </div>
               </div>
@@ -123,8 +123,8 @@ export default async function WgClientsTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice id={client.id} />
-                      <DeleteInvoice id={client.id} />
+                      <UpdateWg id={client.id} />
+                      <DeleteWg id={client.id} />
                     </div>
                   </td>
                 </tr>
