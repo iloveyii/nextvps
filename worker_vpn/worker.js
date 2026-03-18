@@ -5,9 +5,9 @@ const util = require("util");
 const { producer } = require("./producer");
 
 const RABBITMQ_URL = process.env.RABBITMQ_URL;
-const QUEUE = "vpn";
+const QUEUE = "wg_clients";
 const execAsync = util.promisify(exec);
-const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
+const sql = postgres(process.env.POSTGRES_URL, { ssl: "prefer" });
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 async function connectWithRetry() {
@@ -25,6 +25,9 @@ async function connectWithRetry() {
 
       ch.consume(QUEUE, async (msg) => {
         await delay(3000); // 15s delay per job
+        console.log(msg);
+        console.log(msg.content);
+        console.log(msg.content.toString());
         const order = JSON.parse(msg.content.toString());
         console.log("📦 Processing order:", order);
         const keys = await generateWireguardKeys();
@@ -45,9 +48,11 @@ async function connectWithRetry() {
 }
 
 async function updateDb(ip, privateKey, publicKey) {
+  console.log("DB Url::", process.env.POSTGRES_URL);
+  console.log("Params::", ip, privateKey, publicKey);
   try {
     await sql`
-      UPDATE vpn_clients
+      UPDATE wg_clients
       SET
         private_key = ${privateKey},
         public_key  = ${publicKey}
@@ -77,16 +82,6 @@ async function generateWireguardKeys() {
     console.error("❌ Key generation failed:", err);
     throw err;
   }
-}
-
-async function generate_server_file(allowed_ip, public_key) {
-  const peer = `
-[Peer]
-PublicKey = ${public_key}
-AllowedIPs = ${allowed_ip}/32
-`;
-  console.log("###########################");
-  console.log(peer);
 }
 
 connectWithRetry();

@@ -4,9 +4,9 @@ const { exec } = require("child_process");
 const util = require("util");
 
 const RABBITMQ_URL = process.env.RABBITMQ_URL;
-const QUEUE = "vpn_server";
+const QUEUE = "config";
 const execAsync = util.promisify(exec);
-const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
+const sql = postgres(process.env.POSTGRES_URL, { ssl: "prefer" });
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 async function connectWithRetry() {
@@ -44,6 +44,8 @@ async function connectWithRetry() {
 }
 
 async function getVpnConfigFromDb() {
+  console.log("DB Url::", process.env.POSTGRES_URL);
+
   try {
     const configs = await sql`
       SELECT * FROM config
@@ -57,9 +59,11 @@ async function getVpnConfigFromDb() {
 }
 
 async function getClientsFromDb() {
+  console.log("DB Url::", process.env.POSTGRES_URL);
+
   try {
     const clients = await sql`
-      SELECT * FROM vpn_clients
+      SELECT * FROM wg_clients
     `;
     return clients;
   } catch (error) {
