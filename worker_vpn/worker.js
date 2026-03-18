@@ -38,7 +38,7 @@ async function connectWithRetry() {
 
       break; // exit retry loop once connected
     } catch (err) {
-      console.log("❌ RabbitMQ not ready, retrying in 5s...");
+      console.log("❌ RabbitMQ not ready, retrying in 5s...", err);
       await new Promise((res) => setTimeout(res, 5000));
     }
   }
@@ -89,4 +89,4 @@ AllowedIPs = ${allowed_ip}/32
   console.log(peer);
 }
 
-connectWithRetry();
+await connectWithRetry();

@@ -37,7 +37,7 @@ async function connectWithRetry() {
 
       break; // exit retry loop once connected
     } catch (err) {
-      console.log("❌ RabbitMQ not ready, retrying in 5s...");
+      console.log("❌ RabbitMQ not ready, retrying in 5s...", err);
       await new Promise((res) => setTimeout(res, 5000));
     }
   }
@@ -68,4 +68,4 @@ async function getClientsFromDb() {
   }
 }
 
-connectWithRetry();
+await connectWithRetry();
