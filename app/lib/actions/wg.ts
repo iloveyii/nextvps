@@ -59,12 +59,11 @@ export async function createWg(prevState: StateWg, formData:FormData) {
 
   try {
     const {name, email, device_tag, status } = validatedFields.data;
-    const date = new Date().toISOString().split('T')[0];
     await sql`
-      INSERT INTO wg_clients (name, email, device_tag, status, date)
-      VALUES (${name}, ${email}, ${device_tag}, ${status}, ${date})
+      INSERT INTO wg_clients (name, email, device_tag, status, updated_at)
+      VALUES (${name}, ${email}, ${device_tag}, ${status}, CURRENT_TIMESTAMP)
     `;
-    console.error('Inserted::', `${name}, ${email}, ${device_tag} ${status}, ${date}`);
+    console.error('Inserted::', `${name}, ${email}, ${device_tag} ${status}`);
   } catch (error) {
     // We'll also log the error to the console for now
     console.error(error);

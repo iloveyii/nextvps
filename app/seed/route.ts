@@ -100,6 +100,10 @@ async function seedRevenue() {
 
 async function seedWgClients() {
   await sql`
+    DROP TABLE IF EXISTS wg_clients
+    `;
+
+  await sql`
     CREATE TABLE IF NOT EXISTS wg_clients (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
@@ -108,7 +112,8 @@ async function seedWgClients() {
       private_key VARCHAR(64) NULL,
       public_key VARCHAR(64) NULL,
       ip_address inet NULL,
-      status TEXT NULL
+      status TEXT NULL,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
   `;
 
