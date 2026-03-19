@@ -3,6 +3,7 @@ import { z } from "zod";
 import postgres from 'postgres';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { add_worker_task } from "../rabbit";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -51,11 +52,14 @@ export async function createWg(prevState: StateWg, formData:FormData) {
   try {
     const {customer_id, device_tag, status } = validatedFields.data;
     const ip_address = await getNextIp();
-    await sql`
+    const result = await sql`
       INSERT INTO wg_clients (customer_id, device_tag, status, updated_at, ip_address)
       VALUES (${customer_id}, ${device_tag}, ${status}, CURRENT_TIMESTAMP, ${ip_address})
+      RETURNING id
     `;
-    console.error('Inserted::', `${customer_id}, ${device_tag} ${status}`);
+    const insertedId = result[0].id;
+    await add_worker_task({id: insertedId, ip: ip_address})
+    console.info('Inserted::', `${customer_id}, ${device_tag} ${status}`);
   } catch (error) {
     // We'll also log the error to the console for now
     console.error(error);
