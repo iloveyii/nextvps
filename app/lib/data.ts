@@ -296,3 +296,47 @@ export async function fetchWgPages(query: string) {
     throw new Error('Failed to fetch total number of invoices.');
   }
 }
+
+export async function fetchFilteredCustomers2(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const customers = await sql<any[]>`
+      SELECT
+        id,
+        name,
+        email,
+        image_url
+      FROM customers
+      WHERE
+        name ILIKE ${`%${query}%`} OR
+        email ILIKE ${`%${query}%`}
+      ORDER BY name ASC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return customers;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch customers.');
+  }
+}
+
+export async function fetchCustomersPages(query: string) {
+  try {
+    const data = await sql`SELECT COUNT(*)
+    FROM customers
+    WHERE
+      name ILIKE ${`%${query}%`} OR
+      email ILIKE ${`%${query}%`} 
+  `;
+    const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of customers.');
+  }
+}
