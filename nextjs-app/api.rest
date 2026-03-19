@@ -3,9 +3,9 @@ POST http://localhost:3003/api/order
 Content-Type: application/json
 
 {
-  "id": "9e414cc3-b518-4342-9c45-2d468b21410d", 
+  "id": "7b48c776-9535-4232-8bca-e6b0fbcdaf1f", 
   "item": "Shoes",
-  "ip": "10.0.0.12"
+  "ip": "10.0.0.15"
 }
 
 

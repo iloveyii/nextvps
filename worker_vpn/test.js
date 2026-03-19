@@ -22,4 +22,29 @@ async function updateDb(ip, privateKey, publicKey) {
   }
 }
 
-updateDb("10.0.0.11", "public", "private");
+// updateDb("10.0.0.11", "public", "private");
+
+function incrementIp(ip) {
+  const parts = ip.split(".").map(Number);
+  parts[3] += 1;
+
+  for (let i = 3; i >= 0; i--) {
+    if (parts[i] > 255) {
+      parts[i] = 0;
+      parts[i - 1]++;
+    }
+  }
+
+  return parts.join(".");
+}
+
+async function getNextIp() {
+  const result = await sql`
+    SELECT host(MAX(ip_address)) AS last_ip FROM wg_clients
+  `;
+
+  const lastIp = result[0].last_ip || "10.0.0.1";
+  console.log(incrementIp(lastIp));
+}
+
+console.log(getNextIp());

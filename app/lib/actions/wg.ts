@@ -50,9 +50,10 @@ export async function createWg(prevState: StateWg, formData:FormData) {
 
   try {
     const {customer_id, device_tag, status } = validatedFields.data;
+    const ip_address = await getNextIp();
     await sql`
-      INSERT INTO wg_clients (customer_id, device_tag, status, updated_at)
-      VALUES (${customer_id}, ${device_tag}, ${status}, CURRENT_TIMESTAMP)
+      INSERT INTO wg_clients (customer_id, device_tag, status, updated_at, ip_address)
+      VALUES (${customer_id}, ${device_tag}, ${status}, CURRENT_TIMESTAMP, ${ip_address})
     `;
     console.error('Inserted::', `${customer_id}, ${device_tag} ${status}`);
   } catch (error) {
@@ -145,4 +146,28 @@ export async function fetchWgClients() {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest invoices.');
   }
+}
+
+
+function incrementIp(ip) {
+  const parts = ip.split(".").map(Number);
+  parts[3] += 1;
+
+  for (let i = 3; i >= 0; i--) {
+    if (parts[i] > 255) {
+      parts[i] = 0;
+      parts[i - 1]++;
+    }
+  }
+
+  return parts.join(".");
+}
+
+export async function getNextIp() {
+  const result = await sql`
+    SELECT host(MAX(ip_address)) AS last_ip FROM wg_clients
+  `;
+
+  const lastIp = result[0].last_ip || "10.0.0.1";
+  return incrementIp(lastIp);
 }
